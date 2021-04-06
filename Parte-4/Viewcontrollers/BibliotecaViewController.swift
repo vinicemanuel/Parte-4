@@ -11,15 +11,14 @@ import Nuke
 class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching, UICollectionViewDelegate {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    private let reuseIdentifier = "BookCollectionViewCell"
     
     let preheater = ImagePrefetcher()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let nib = UINib(nibName: "LivroCell", bundle: nil)
-        collectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
+        let nib = UINib(nibName: LivroCell.nibName, bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: LivroCell.reuseIdentifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.prefetchDataSource = self
@@ -42,10 +41,16 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! LivroCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LivroCell.reuseIdentifier, for: indexPath) as! LivroCell
         
         let livro = Biblioteca.shared.livros[indexPath.row]
         cell.titleLabel.text = livro.title
+        
+        if let date = livro.publishedDate {
+            let dateFormater = DateFormatter()
+            dateFormater.dateFormat = "dd/MMM/yyyy"
+            cell.dateLabel.text = "\(dateFormater.string(from: date))"
+        }
         
         if let url = livro.thumbnailUrl {
             

@@ -10,8 +10,12 @@ import Nuke
 
 class LivroCell: UICollectionViewCell {
     
+    static let reuseIdentifier = "BookCollectionViewCell"
+    static let nibName = "LivroCell"
+    
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var dateLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

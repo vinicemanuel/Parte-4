@@ -18,10 +18,16 @@ struct Livro: Codable {
     var categories: [String]
     var publishedDate: Date?
     var quantity: Int
-    
+}
+
+extension Livro {
     var canReserve: Bool {
         get {
             return quantity > 0
         }
     }
+}
+
+extension Livro: Hashable {
+
 }
