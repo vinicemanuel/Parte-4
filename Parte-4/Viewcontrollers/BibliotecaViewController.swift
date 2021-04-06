@@ -26,16 +26,14 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let viewController = segue.destination as? BookDetailViewController, let book = sender as? Livro {
-            viewController.book = book
+        if let viewController = segue.destination as? BookDetailViewController, let index = sender as? Int {
+            viewController.bookIndex = index
         }
     }
     
     //MARK: - UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let livro = Biblioteca.shared.livros[indexPath.row]
-        
-        self.performSegue(withIdentifier: "fromBibliotecaViewControllerToBookDetailViewController", sender: livro)
+        self.performSegue(withIdentifier: "fromBibliotecaViewControllerToBookDetailViewController", sender: indexPath.row)
     }
     
     //MARK: - UICollectionViewDataSource

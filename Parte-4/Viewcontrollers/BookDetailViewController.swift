@@ -21,14 +21,15 @@ class BookDetailViewController: UIViewController {
     
     @IBOutlet weak var reserveButton: UIButton!
     
-    var book: Livro!
+    var bookIndex: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.configView(book: self.book)
+        let book = Biblioteca.shared.livros[self.bookIndex]
+        self.configView(book: book)
     }
     
-    func configView(book: Livro) {
+    private func configView(book: Livro) {
         
         self.bookTitle.text = "Titulo: \(book.title)"
         self.bookIsbn.text = "isbn: \(book.isbn ?? "")"
@@ -49,6 +50,10 @@ class BookDetailViewController: UIViewController {
             self.bookDate.text = "Publicado em: \(dateFormater.string(from: date))"
         }
         
+        self.configButton(book: book)
+    }
+    
+    private func configButton(book: Livro) {
         if !book.canReserve {
             self.reserveButton.isEnabled = false
             self.reserveButton.alpha = 0.3
@@ -59,6 +64,8 @@ class BookDetailViewController: UIViewController {
     }
     
     @IBAction func reserveButtonTaped(_ sender: Any) {
-        
+        print(Biblioteca.shared.livros[self.bookIndex].quantity)
+        Biblioteca.shared.livros[self.bookIndex].quantity = Biblioteca.shared.livros[self.bookIndex].quantity - 1
+        self.configButton(book: Biblioteca.shared.livros[self.bookIndex])
     }
 }
