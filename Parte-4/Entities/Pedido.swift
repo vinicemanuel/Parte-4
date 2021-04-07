@@ -11,3 +11,7 @@ struct Pedido {
     var livro: Livro
     var dataDeEmprestimo: Date
 }
+
+extension Pedido: Hashable {
+    
+}

@@ -69,5 +69,6 @@ class BookDetailViewController: UIViewController {
         Biblioteca.shared.livros[self.bookIndex].quantity = Biblioteca.shared.livros[self.bookIndex].quantity - 1
         User.shared.pedidos.append(Pedido(livro: Biblioteca.shared.livros[self.bookIndex], dataDeEmprestimo: Date()))
         self.configButton(book: Biblioteca.shared.livros[self.bookIndex])
+        self.dismiss(animated: true, completion: nil)
     }
 }
