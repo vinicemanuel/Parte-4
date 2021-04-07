@@ -22,6 +22,8 @@
 		09467B3526169BF900937259 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 09467B3426169BF900937259 /* Nuke */; };
 		09467B3A26169C5D00937259 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09467B3926169C5D00937259 /* UIImageView.swift */; };
 		097A1E73261793990034A32A /* BookDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097A1E72261793990034A32A /* BookDetailViewController.swift */; };
+		09A303A7261E6D59000B9630 /* Pedido.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A303A6261E6D59000B9630 /* Pedido.swift */; };
+		09A303AA261E6D72000B9630 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A303A9261E6D72000B9630 /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,8 @@
 		09467B2F26169B4C00937259 /* books.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = books.json; sourceTree = "<group>"; };
 		09467B3926169C5D00937259 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		097A1E72261793990034A32A /* BookDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookDetailViewController.swift; sourceTree = "<group>"; };
+		09A303A6261E6D59000B9630 /* Pedido.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pedido.swift; sourceTree = "<group>"; };
+		09A303A9261E6D72000B9630 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,8 @@
 			children = (
 				09467B20261698CF00937259 /* Livro.swift */,
 				09467B23261698E100937259 /* Biblioteca.swift */,
+				09A303A6261E6D59000B9630 /* Pedido.swift */,
+				09A303A9261E6D72000B9630 /* User.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -207,11 +213,13 @@
 				09467B092616988700937259 /* AppDelegate.swift in Sources */,
 				09467B3A26169C5D00937259 /* UIImageView.swift in Sources */,
 				09467B21261698CF00937259 /* Livro.swift in Sources */,
+				09A303A7261E6D59000B9630 /* Pedido.swift in Sources */,
 				09467B292616999900937259 /* LivroCell.swift in Sources */,
 				0917CADF261D1C0F0025F546 /* ReserveViewController.swift in Sources */,
 				09467B24261698E100937259 /* Biblioteca.swift in Sources */,
 				097A1E73261793990034A32A /* BookDetailViewController.swift in Sources */,
 				09467B0B2616988700937259 /* SceneDelegate.swift in Sources */,
+				09A303AA261E6D72000B9630 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -54,7 +54,8 @@ class BookDetailViewController: UIViewController {
     }
     
     private func configButton(book: Livro) {
-        if !book.canReserve {
+        let reserveBooks = User.shared.pedidos.map({$0.livro})
+        if !book.canReserve || reserveBooks.contains(book) {
             self.reserveButton.isEnabled = false
             self.reserveButton.alpha = 0.3
         } else {
@@ -66,6 +67,7 @@ class BookDetailViewController: UIViewController {
     @IBAction func reserveButtonTaped(_ sender: Any) {
         print(Biblioteca.shared.livros[self.bookIndex].quantity)
         Biblioteca.shared.livros[self.bookIndex].quantity = Biblioteca.shared.livros[self.bookIndex].quantity - 1
+        User.shared.pedidos.append(Pedido(livro: Biblioteca.shared.livros[self.bookIndex], dataDeEmprestimo: Date()))
         self.configButton(book: Biblioteca.shared.livros[self.bookIndex])
     }
 }
