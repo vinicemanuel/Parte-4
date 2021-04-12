@@ -27,7 +27,7 @@ class Biblioteca {
         var categoreis = self.livros.flatMap({$0.categories})
         categoreis.append("Outros")
         let categoriesSet: Set<String> = Set<String>(categoreis)
-        return Array(categoriesSet)
+        return Array(categoriesSet).sorted()
     }()
     
     lazy var livrosPorCategoria: Category = {
@@ -36,8 +36,10 @@ class Biblioteca {
         
         self.categorias.forEach { (categorie) in
             let books = self.livros.filter({$0.categories.contains(categorie)})
-            booksWithCategoires.append(contentsOf: books)
-            result.append((categorie, books))
+            if books.count > 0 {
+                booksWithCategoires.append(contentsOf: books)
+                result.append((categorie, books))
+            }
         }
         
         let otherBooks = self.livros.difference(from: booksWithCategoires)

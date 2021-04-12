@@ -37,13 +37,13 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     
     //MARK: - UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        Biblioteca.shared.livros.count
+        return Biblioteca.shared.livrosPorCategoria[section].livros.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LivroCell.reuseIdentifier, for: indexPath) as! LivroCell
         
-        let livro = Biblioteca.shared.livros[indexPath.row]
+        let livro = Biblioteca.shared.livrosPorCategoria[indexPath.section].livros[indexPath.row]
         cell.titleLabel.text = livro.title
         
         if let date = livro.publishedDate {
@@ -64,6 +64,18 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
         return cell
     }
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return Biblioteca.shared.livrosPorCategoria.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeader.reuseIdentifier, for: indexPath) as! CollectionHeader
+        
+        header.titleLabel.text = Biblioteca.shared.livrosPorCategoria[indexPath.section].nome
+        
+        return header
+    }
+    
     //MARK: - UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -77,8 +89,6 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
         let availableWidth = screenWidth - (verticalInset * 2) - (spacing * (columns - 1))
         let cellWidth = floor(availableWidth / columns)
         let cellHeight: CGFloat = 160
-        print("screen width: \(screenWidth)")
-        print("cell width: \(cellWidth)")
         return CGSize(width: cellWidth, height: cellHeight)
     }
     
