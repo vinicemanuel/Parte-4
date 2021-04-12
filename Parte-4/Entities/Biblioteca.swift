@@ -7,10 +7,12 @@
 
 import Foundation
 
+typealias Category = [(nome: String,livros: [Livro])]
+
 class Biblioteca {
     static var shared = Biblioteca()
     private init() {}
-
+    
     var livros: [Livro] = {
         let contents = try! Data(contentsOf: Bundle.main.url(forResource: "books", withExtension: "json")!)
         let decoder = JSONDecoder()
@@ -19,5 +21,30 @@ class Biblioteca {
         decoder.dateDecodingStrategy = .formatted(dateFormatter)
         let books = try! decoder.decode([Livro].self, from: contents)
         return books
+    }()
+    
+    lazy var categorias: [String] = {
+        var categoreis = self.livros.flatMap({$0.categories})
+        categoreis.append("Outros")
+        let categoriesSet: Set<String> = Set<String>(categoreis)
+        return Array(categoriesSet)
+    }()
+    
+    lazy var livrosPorCategoria: Category = {
+        var result: Category = []
+        var booksWithCategoires: [Livro] = []
+        
+        self.categorias.forEach { (categorie) in
+            let books = self.livros.filter({$0.categories.contains(categorie)})
+            booksWithCategoires.append(contentsOf: books)
+            result.append((categorie, books))
+        }
+        
+        let otherBooks = self.livros.difference(from: booksWithCategoires)
+        if otherBooks.count > 0 {
+            result.append(("Outros", otherBooks))
+        }
+        
+        return result
     }()
 }
