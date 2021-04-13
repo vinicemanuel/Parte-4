@@ -23,14 +23,14 @@ class Biblioteca {
         return books
     }()
     
-    lazy var categorias: [String] = {
+    lazy private(set) var categorias: [String] = {
         var categoreis = self.livros.flatMap({$0.categories})
         categoreis.append("Outros")
         let categoriesSet: Set<String> = Set<String>(categoreis)
         return Array(categoriesSet).sorted()
     }()
     
-    lazy var livrosPorCategoria: Category = {
+    lazy private(set) var livrosPorCategoria: Category = {
         var result: Category = []
         var booksWithCategoires: [Livro] = []
         

@@ -32,7 +32,10 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     
     //MARK: - UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: "fromBibliotecaViewControllerToBookDetailViewController", sender: indexPath.row)
+        let book = Biblioteca.shared.livrosPorCategoria[indexPath.section].livros[indexPath.row]
+        guard let bookIndex: Int = Biblioteca.shared.livros.lastIndex(where: {$0.title == book.title}) else { return }
+        
+        self.performSegue(withIdentifier: "fromBibliotecaViewControllerToBookDetailViewController", sender: bookIndex)
     }
     
     //MARK: - UICollectionViewDataSource
