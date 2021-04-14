@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias Category = [(nome: String,livros: [Livro])]
+typealias Categories = [(nome: String,livros: [Livro])]
 
 class Biblioteca {
     static var shared = Biblioteca()
@@ -30,23 +30,33 @@ class Biblioteca {
         return Array(categoriesSet).sorted()
     }()
     
-    lazy private(set) var livrosPorCategoria: Category = {
-        var result: Category = []
+    lazy private(set) var livrosPorCategoria: Categories = {
+        return self.getLivrosPorCategoria()
+    }()
+    
+    func getLivrosPorCategoria(filterByTitle titleToFilter: String = "") -> Categories {
+        var result: Categories = []
         var booksWithCategoires: [Livro] = []
         
+        var livros = self.livros
+        
+        if titleToFilter != "" {
+            livros = livros.filter({$0.title.uppercased() == titleToFilter.trimmingCharacters(in: CharacterSet(charactersIn: " ")).uppercased()})
+        }
+        
         self.categorias.forEach { (categorie) in
-            let books = self.livros.filter({$0.categories.contains(categorie)})
+            let books = livros.filter({$0.categories.contains(categorie)})
             if books.count > 0 {
                 booksWithCategoires.append(contentsOf: books)
                 result.append((categorie, books))
             }
         }
         
-        let otherBooks = self.livros.difference(from: booksWithCategoires)
+        let otherBooks = livros.difference(from: booksWithCategoires)
         if otherBooks.count > 0 {
             result.append(("Outros", otherBooks))
         }
         
         return result
-    }()
+    }
 }

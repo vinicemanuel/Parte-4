@@ -32,4 +32,13 @@ class Parte_4Tests: XCTestCase {
         
         XCTAssertNotEqual(booksByCategories.count, 0)
     }
+    
+    func testBookCategoriesWithFilter() {
+        let booksByCategories = Biblioteca.shared.getLivrosPorCategoria(filterByTitle: "SOA Governance in Action")
+        
+        XCTAssertEqual(booksByCategories.count, 1)
+        XCTAssertEqual(booksByCategories.first?.livros.count, 1)
+        
+        XCTAssertNotEqual(booksByCategories.count, 0)
+    }
 }
