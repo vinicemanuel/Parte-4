@@ -12,16 +12,28 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    let preheater = ImagePrefetcher()
+    private var searchController: UISearchController!
+    private let preheater = ImagePrefetcher()
+    private var categories = Biblioteca.shared.livrosPorCategoria
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         
         let nib = UINib(nibName: LivroCell.nibName, bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: LivroCell.reuseIdentifier)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.prefetchDataSource = self
+        
+        self.searchController = UISearchController(searchResultsController: nil)
+        self.searchController.searchResultsUpdater = self
+        self.searchController.obscuresBackgroundDuringPresentation = false
+        self.searchController.searchBar.placeholder = "Search Books"
+        self.navigationItem.titleView = searchController.searchBar
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.definesPresentationContext = true
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -32,7 +44,7 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     
     //MARK: - UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let book = Biblioteca.shared.livrosPorCategoria[indexPath.section].livros[indexPath.row]
+        let book = categories[indexPath.section].livros[indexPath.row]
         guard let bookIndex: Int = Biblioteca.shared.livros.lastIndex(where: {$0.title == book.title}) else { return }
         
         self.performSegue(withIdentifier: "fromBibliotecaViewControllerToBookDetailViewController", sender: bookIndex)
@@ -40,13 +52,13 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     
     //MARK: - UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Biblioteca.shared.livrosPorCategoria[section].livros.count
+        return categories[section].livros.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LivroCell.reuseIdentifier, for: indexPath) as! LivroCell
         
-        let livro = Biblioteca.shared.livrosPorCategoria[indexPath.section].livros[indexPath.row]
+        let livro = categories[indexPath.section].livros[indexPath.row]
         cell.titleLabel.text = livro.title
         
         if let date = livro.publishedDate {
@@ -68,13 +80,13 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return Biblioteca.shared.livrosPorCategoria.count
+        return categories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: CollectionHeader.reuseIdentifier, for: indexPath) as! CollectionHeader
         
-        header.titleLabel.text = Biblioteca.shared.livrosPorCategoria[indexPath.section].nome
+        header.titleLabel.text = categories[indexPath.section].nome
         
         return header
     }
@@ -110,6 +122,14 @@ class BibliotecaViewController: UIViewController, UICollectionViewDataSource, UI
         }
         
         preheater.stopPrefetching(with: urls)
+    }
+}
+
+extension BibliotecaViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        self.categories = Biblioteca.shared.getLivrosPorCategoria(filterByTitle: text)
+        self.collectionView.reloadData()
     }
 }
 

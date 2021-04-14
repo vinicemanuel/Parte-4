@@ -41,7 +41,7 @@ class Biblioteca {
         var livros = self.livros
         
         if titleToFilter != "" {
-            livros = livros.filter({$0.title.uppercased() == titleToFilter.trimmingCharacters(in: CharacterSet(charactersIn: " ")).uppercased()})
+            livros = livros.filter({$0.title.uppercased().localizedStandardContains(titleToFilter.trimmingCharacters(in: CharacterSet(charactersIn: " ")).uppercased())})
         }
         
         self.categorias.forEach { (categorie) in
